@@ -10,21 +10,33 @@ function array_sort($ar,$callable = null,$flags = SORT_LOCALE_STRING,$options = 
 	}
 
 	$options += [
-		"reverse" => false,
-		"preserve_keys" => false,
+		"sort_keys" => false,
 	];
 
-	$in = array_map($callable,$ar);
+	$options += [
+		"reverse" => false,
+		"preserve_keys" => $options["sort_keys"], // default false
+	];
+
+	$keys = array_keys($ar);
+	if($options["sort_keys"]){
+		$in = $keys;
+	}else{
+		$in = array_values($ar);
+	}
+
+	$in = array_map($callable,$in);
+
+	asort($in,$flags);
 
 	if($options["reverse"]){
-		arsort($in,$flags);
-	}else{
-		asort($in,$flags);
+		$in = array_reverse($in,true);
 	}
 
 	$out = [];
 	foreach(array_keys($in) as $k){
-		$out[$k] = $ar[$k];
+		$key = $keys[$k];
+		$out[$key] = $ar[$key];
 	}
 
 	if(!$options["preserve_keys"]){
