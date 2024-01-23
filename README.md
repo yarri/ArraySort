@@ -83,7 +83,7 @@ Usage
     //   ],
     // ]
 
-    // sorting by the title
+    // sorting by the title without article
     array_sort($books, function($book){ return preg_replace("/^(a|the) /i","",$book["title"]); });
     // [
     //   [
