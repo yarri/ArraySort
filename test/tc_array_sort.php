@@ -19,7 +19,7 @@ class TcArraySort extends TcBase {
 			"Orange",
 		],$ar2);
 
-		$ar2 = array_sort($ar,null,SORT_LOCALE_STRING,["reverse" => true]);
+		$ar2 = array_sort($ar,SORT_LOCALE_STRING,null,["reverse" => true]);
 		$this->assertEquals([
 			"Orange",
 			"Melon",
@@ -28,86 +28,89 @@ class TcArraySort extends TcBase {
 			"Apple",
 		],$ar2);
 
-		$ar2 = array_sort($ar,null,SORT_LOCALE_STRING,["preserve_keys" => true]);
+		$ar2 = array_sort($ar,SORT_LOCALE_STRING,null,["preserve_keys" => true]);
 		$this->assertEquals([
-			"Apple",
-			"Apple",
-			"Banana",
-			"Melon",
-			"Orange",
-		],array_values($ar2));
-		$this->assertEquals([
-			7,
-			33,
-			11,
-			222,
-			10,
-		],array_keys($ar2));
+			7 => "Apple",
+			33 => "Apple",
+			11 => "Banana",
+			222 => "Melon",
+			10 => "Orange",
+		],$ar2);
 
-		$ar2 = array_sort($ar,null,SORT_LOCALE_STRING,["preserve_keys" => true, "reverse" => true]);
-		$this->assertEquals([
-			"Orange",
-			"Melon",
-			"Banana",
-			"Apple",
-			"Apple",
-		],array_values($ar2));
-		$this->assertEquals([
-			10,
-			222,
-			11,
-			33,
-			7,
-		],array_keys($ar2));
+		$ar2 = array_sort($ar,SORT_LOCALE_STRING,null,["preserve_keys" => true, "reverse" => true]);
+		$this->assertArrayEquals([
+			10 => "Orange",
+			222 => "Melon",
+			11 => "Banana",
+			33 => "Apple",
+			7 => "Apple",
+		],$ar2);
 
 		// sort_keys
 
-		$ar3 = array_sort($ar,null,SORT_LOCALE_STRING,["sort_keys" => true]);
-		$this->assertEquals([
-			"Orange",
-			"Banana",
-			"Melon",
-			"Apple",
-			"Apple",
-		],array_values($ar3));
-		$this->assertEquals([
-			10,
-			11,
-			222,
-			33,
-			7,
-		],array_keys($ar3));
+		$ar3 = array_sort($ar,SORT_LOCALE_STRING,null,["sort_keys" => true]);
+		$this->assertArrayEquals([
+			10 => "Orange",
+			11 => "Banana",
+			222 => "Melon",
+			33 => "Apple",
+			7 => "Apple",
+		],$ar3);
 
-		$ar3 = array_sort($ar,null,SORT_LOCALE_STRING,["sort_keys" => true, "reverse" => true]);
-		$this->assertEquals([
-			"Apple",
-			"Apple",
-			"Melon",
-			"Banana",
-			"Orange",
-		],array_values($ar3));
-		$this->assertEquals([
-			7,
-			33,
-			222,
-			11,
-			10,
-		],array_keys($ar3));
+		$ar3 = array_sort($ar,SORT_LOCALE_STRING,null,["sort_keys" => true, "reverse" => true]);
+		$this->assertArrayEquals([
+			7 => "Apple",
+			33 => "Apple",
+			222 => "Melon",
+			11 => "Banana",
+			10 => "Orange",
+		],$ar3);
 
 		$ar3 = array_sort($ar,null,SORT_NUMERIC,["sort_keys" => true]);
-		$this->assertEquals([
-			"Apple",
-			"Orange",
-			"Banana",
-			"Apple",
-			"Melon",
-		],array_values($ar3));
-		$this->assertEquals([
-			7,
-			10,
-			11,
-			33,
-			222,
-		],array_keys($ar3));
+		$this->assertArrayEquals([
+			7 => "Apple",
+			10 => "Orange",
+			11 => "Banana",
+			33 => "Apple",
+			222 => "Melon",
+		],$ar3);
+	}
+
+	function test_usage(){
+		$fruits = ["d" => "lemon", "a" => "orange", "b" => "banana", "c" => "apple"];
+
+		$sorted = array_sort($fruits);
+		$this->assertArrayEquals(["apple","banana","lemon","orange"],$sorted);
+
+		$sorted = array_sort($fruits,["reverse" => true]);
+		$this->assertArrayEquals(["orange","lemon","banana","apple"],$sorted);
+
+		$sorted = array_sort($fruits,["preserve_keys" => true]);
+		$this->assertArrayEquals(["c" => "apple", "b" => "banana", "d" => "lemon", "a" => "orange"],$sorted);
+
+		$sorted = array_sort($fruits,["preserve_keys" => true, "reverse" => true]);
+		$this->assertArrayEquals(["a" => "orange", "d" => "lemon", "b" => "banana", "c" => "apple"],$sorted);
+
+		$sorted = array_sort($fruits,["sort_keys" => true]);
+		$this->assertArrayEquals(["a" => "orange", "b" => "banana", "c" => "apple", "d" => "lemon"],$sorted);
+
+		$sorted = array_sort($fruits,["sort_keys" => true, "reverse" => true]);
+		$this->assertArrayEquals(["d" => "lemon", "c" => "apple", "b" => "banana", "a" => "orange"],$sorted);
+
+		// numeric sorting
+
+		$numbers = ["d" => 200, "a" => 100, "b" => 20, "c" => 10];
+
+		$sorted = array_sort($numbers);
+		$this->assertArrayEquals($sorted,[10, 100, 20, 200]);
+
+		$sorted = array_sort($numbers,SORT_NUMERIC);
+		$this->assertArrayEquals($sorted,[10, 20, 100, 200]);
+
+		$sorted = array_sort($numbers,SORT_NUMERIC,["reverse" => true]);
+		$this->assertArrayEquals($sorted,[200, 100, 20, 10]);
+
+		$sorted = array_sort($numbers,SORT_NUMERIC,["preserve_keys" => true]);
+		$this->assertArrayEquals($sorted,["c" => 10, "b" => 20, "a" => 100, "d" => 200]);
 	}
 }

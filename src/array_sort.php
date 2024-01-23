@@ -2,11 +2,41 @@
 /**
  *
  * $articles = Article::FindAll();
- * $articles = array_sort($articles,function($article){ return $article->getTitle(); });
+ * // Note that the class Article has the magic __toString() method which returns the title of the given article.
+ *
+ * // Sorting articles by title
+ * $articles = array_sort($articles);
+ *
+ * // Sorting articles by title
+ * $articles = array_sort($articles,["reverse" => true]);
+ *
+ * // Sorting articles by title
+ * $articles = array_sort($articles);
+ *
  */
-function array_sort($ar,$callable = null,$flags = SORT_LOCALE_STRING,$options = []){
-	if(is_null($callable)){
-		$callable = function($item){ return (string)$item; };
+function array_sort($ar,$flags = SORT_LOCALE_STRING,$callback = null,$options = []){
+	if(!is_null($callback) && !is_callable($callback)){
+		if(is_array($callback)){
+			$options = $callback;
+			$callback = null;
+		}elseif(is_numeric($callback)){
+			$flags = $callback;
+			$callback = null;
+		}
+	}
+
+	if(!is_numeric($flags)){
+		if(is_callable($flags)){
+			$callback = $flags;
+			$flags = SORT_LOCALE_STRING;
+		}elseif(is_array($flags)){
+			$options = $flags;
+			$flags = SORT_LOCALE_STRING;
+		}
+	}
+
+	if(is_null($callback)){
+		$callback = function($item){ return (string)$item; };
 	}
 
 	$options += [
@@ -25,7 +55,7 @@ function array_sort($ar,$callable = null,$flags = SORT_LOCALE_STRING,$options = 
 		$in = array_values($ar);
 	}
 
-	$in = array_map($callable,$in);
+	$in = array_map($callback,$in);
 
 	asort($in,$flags);
 
