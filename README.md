@@ -1,6 +1,8 @@
 ArraySort
 =========
 
+[![Build Status](https://app.travis-ci.com/yarri/ArraySort.svg?branch=master)](https://app.travis-ci.com/yarri/ArraySort)
+
 The definitive function for sorting arrays in PHP.
 
 Function signatures
@@ -11,6 +13,7 @@ Function signatures
     array_sort(array $array, int $flags = SORT_LOCALE_STRING): array
     array_sort(array $array, int $flags = SORT_LOCALE_STRING, array $options = []): array
     array_sort(array $array, int $flags = SORT_LOCALE_STRING, callable $callback = null, array $options = []): array
+    array_sort(array $array, callback $callback = null, array $options = []): array
 
 Usage
 -----
