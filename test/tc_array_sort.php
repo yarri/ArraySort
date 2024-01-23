@@ -97,7 +97,7 @@ class TcArraySort extends TcBase {
 		$sorted = array_sort($fruits,["sort_keys" => true, "reverse" => true]);
 		$this->assertArrayEquals(["d" => "lemon", "c" => "apple", "b" => "banana", "a" => "orange"],$sorted);
 
-		// numeric sorting
+		// === NUMERIC SORTING ===
 
 		$numbers = ["d" => 200, "a" => 100, "b" => 20, "c" => 10];
 
@@ -112,5 +112,68 @@ class TcArraySort extends TcBase {
 
 		$sorted = array_sort($numbers,SORT_NUMERIC,["preserve_keys" => true]);
 		$this->assertArrayEquals($sorted,["c" => 10, "b" => 20, "a" => 100, "d" => 200]);
+
+		// === SORTING OF STRUCTURES ===
+
+		$books = [
+			[
+				"author" => "Verne, Jules",
+				"title" => "Around the World in Eighty Days",
+			],
+			[
+				"author" => "Tolstoy, Leo",
+				"title" => "War and Peace",
+			],
+			[
+				"author" => "King, Stephen",
+				"title" => "The X-Files",
+			],
+			[
+				"author" => "Toole, John Kennedy",
+				"title" => "A Confederacy of Dunces",
+			],
+		];
+
+		// sorting by the author
+		$sorted = array_sort($books, function($book){ return $book["author"]; });
+		$this->assertArrayEquals([
+			[
+				"author" => "King, Stephen",
+				"title" => "The X-Files",
+			],
+			[
+				"author" => "Tolstoy, Leo",
+				"title" => "War and Peace",
+			],
+			[
+				"author" => "Toole, John Kennedy",
+				"title" => "A Confederacy of Dunces",
+			],
+			[
+				"author" => "Verne, Jules",
+				"title" => "Around the World in Eighty Days",
+			],
+		],$sorted);
+
+		// sorting by the title without article
+		$sorted = array_sort($books, function($book){ return preg_replace("/^(a|the) /i","",$book["title"]); });
+		$this->assertArrayEquals([
+			[
+				"author" => "Verne, Jules",
+				"title" => "Around the World in Eighty Days",
+			],
+			[
+				"author" => "Toole, John Kennedy",
+				"title" => "A Confederacy of Dunces",
+			],
+			[
+				"author" => "Tolstoy, Leo",
+				"title" => "War and Peace",
+			],
+			[
+				"author" => "King, Stephen",
+				"title" => "The X-Files",
+			],
+		],$sorted);
 	}
 }
