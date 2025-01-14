@@ -156,7 +156,7 @@ class TcArraySort extends TcBase {
 		],$sorted);
 
 		// sorting by the title without article
-		$sorted = array_sort($books, function($book){ return preg_replace("/^(a|the) /i","",$book["title"]); });
+		$sorted = array_sort($books, function($book){ return preg_replace("/^(an?|the) /i","",$book["title"]); });
 		$this->assertArrayEquals([
 			[
 				"author" => "Verne, Jules",

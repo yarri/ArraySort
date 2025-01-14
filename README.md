@@ -123,7 +123,7 @@ Usage
     // ]
 
     // sorting by the title without article
-    array_sort($books, function($book){ return preg_replace("/^(a|the) /i","",$book["title"]); });
+    array_sort($books, function($book){ return preg_replace("/^(an?|the) /i","",$book["title"]); });
     // [
     //   [
     //     "author" => "Verne, Jules",
