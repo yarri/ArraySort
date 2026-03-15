@@ -1,7 +1,7 @@
 ArraySort
 =========
 
-[![Build Status](https://app.travis-ci.com/yarri/ArraySort.svg?branch=master)](https://app.travis-ci.com/yarri/ArraySort)
+[![Tests](https://github.com/yarri/ArraySort/actions/workflows/tests.yml/badge.svg)](https://github.com/yarri/ArraySort/actions/workflows/tests.yml)
 
 The definitive function for sorting arrays in PHP.
 
